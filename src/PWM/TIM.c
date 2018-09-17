@@ -38,12 +38,20 @@ void TIM1_Init(uint32_t PSC)
 	GPIOA->OSPEEDR|= (0x03 << 14);         // GPIOA7 - High Speed
 	GPIOA->AFR[0] |= (1 << 28);
 	GPIOA->AFR[0] &= ~(0x07 << 29);        // GPIOA7 - AF1 <--> TIM1
+
+	TIM1->CR1     |= TIM_CR1_CEN;          // ENABLE TIM1
 }
 
 void TIM1_PWM_Start(void)
 {
-	TIM1->CR1     |= TIM_CR1_CEN;          // ENABLE TIM1
 	TIM1->CCER    |= 0x01;                 // ENABLE CC1
+	TIM1->CCER    |= (1 << 2);
+}
+
+void TIM1_PWM_Stop(void)
+{
+	TIM1->CCER    &= ~(1 << 0);
+	TIM1->CCER    &= ~(1 << 2);
 }
 
 void TIM1_Set_PWM_Freq(uint32_t freq)
@@ -60,4 +68,30 @@ void TIM1_Set_PWM_Duty(uint8_t Duty_Percent)
 	CCR = (uint32_t) (Duty_Percent * ARR / 100);
 	TIM1->CCR1 = CCR;
 }
+
+void TIM7_Init(void)
+{
+	RCC->APB1ENR |= RCC_APB1ENR_TIM7EN;
+	TIM7->PSC     = 39999;         // TIM6 Time Base = 0.5ms
+	TIM7->CR1    |= 0x0000008c;    // OPM Mode, Update EV
+	TIM7->DIER   |= 0x01;          // ENABLE UEV
+	NVIC->ISER[1]|= (1 << 23);     // ENABLE IRQn-55
+	NVIC->IP[55] |= 0x50;          // IRQn Priority 1 - 1
+}
+
+void TIM7_Start(void)
+{
+	TIM7->CR1 |= 0x01;
+}
+
+void TIM7_Stop(void)
+{
+	TIM7->CR1 &= 0x00;
+}
+
+void TIM7_SetVal(uint16_t ARR)
+{
+	TIM7->ARR = ARR;
+}
+
 

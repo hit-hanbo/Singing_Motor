@@ -1,4 +1,9 @@
 TIM.c:11:6:TIM1_Init	16	static
-TIM.c:43:6:TIM1_PWM_Start	4	static
-TIM.c:49:6:TIM1_Set_PWM_Freq	24	static
-TIM.c:56:6:TIM1_Set_PWM_Duty	24	static
+TIM.c:45:6:TIM1_PWM_Start	4	static
+TIM.c:51:6:TIM1_PWM_Stop	4	static
+TIM.c:57:6:TIM1_Set_PWM_Freq	24	static
+TIM.c:64:6:TIM1_Set_PWM_Duty	24	static
+TIM.c:72:6:TIM7_Init	4	static
+TIM.c:82:6:TIM7_Start	4	static
+TIM.c:87:6:TIM7_Stop	4	static
+TIM.c:92:6:TIM7_SetVal	16	static

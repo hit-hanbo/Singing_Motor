@@ -8,6 +8,6 @@
 #ifndef SINGER_H_
 #define SINGER_H_
 
-
+void Sing_Start();
 
 #endif /* SINGER_H_ */

@@ -1,10 +1,9 @@
 #include "stm32f4xx.h"
 #include "PWM/TIM.h"
+#include "PWM/Singer.h"
 
 void NVIC_Init_Priority_Group(void);
 void SysTick_Init(void);
-
-
 
 int main(void)
 {
@@ -12,8 +11,11 @@ int main(void)
 	NVIC_Init_Priority_Group();
 	TIM1_Init(159);
 	TIM1_Set_PWM_Freq(1000);
-	TIM1_Set_PWM_Duty(60);
+	TIM1_Set_PWM_Duty(50);
 	TIM1_PWM_Start();
+	TIM7_Init();
+	TIM7_Start();
+	Sing_Start();
 	for(;;);
 }
 

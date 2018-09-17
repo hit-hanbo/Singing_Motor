@@ -6,8 +6,11 @@
  */
 #include "stm32f4xx.h"
 #include "Singer.h"
+#include "TIM.h"
 
 // define C tune
+#define N 10000
+
 #define DOb 260
 #define REb 294
 #define MIb 330
@@ -80,13 +83,44 @@
 #define HALF_SOs 319
 #define HALF_LAs 284
 #define HALF_SIs 253
-uint32_t notes[][]={
-		{DO, 4},
-		{RE, 4},
-		{MI, 4},
+
+#define X 13
+
+uint32_t notes[X][2]={
+		{SO, HALF_SO},
+		{MI, HALF_MI},
+		{SO, HALF_SO},
+		{MI, HALF_MI},
+		{SO, HALF_SO},
+		{MI, HALF_MI},
+		{DO, 2 * FULL_DO},
+		{RE, HALF_RE},
+		{FA, HALF_FA},
+		{MI, HALF_MI},
+		{RE, HALF_RE},
+		{SO, 2 * FULL_SO},
+		{N, FULL_DO},
 };
+uint16_t i = 1;
 
-void Sing_Note(uint32_t note, uint32_t time)
+void Sing_Start()
 {
+	TIM1_Set_PWM_Freq(notes[0][0]);
+	TIM7_SetVal(notes[0][1]);
+	TIM1_PWM_Start();
+}
 
+void TIM7_IRQHandler(void)
+{
+	TIM7->SR &= 0x0;
+	TIM1_PWM_Stop();
+	if(i == X - 1)
+		i = 0;
+	else
+		i ++;
+	TIM1_Set_PWM_Freq(notes[i][0]);
+	TIM7_SetVal(notes[i][1]);
+	TIM1_Set_PWM_Duty(50);
+	TIM1_PWM_Start();
+	TIM7_Start();
 }

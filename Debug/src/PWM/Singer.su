@@ -1,0 +1,2 @@
+Singer.c:106:6:Sing_Start	8	static
+Singer.c:113:6:TIM7_IRQHandler	8	static
